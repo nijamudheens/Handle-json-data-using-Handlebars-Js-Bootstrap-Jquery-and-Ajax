@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Handle json data using Handlebars Js, Ajax</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+
+</head>
+
+<body>
+    <div class="container bg-light mt-5 pt-4 pb-4">
+        <div class="col-12 col-md-12 pb-5">
+            <h1 class="text-center p-4">Handle json data using Handlebars Js, Bootstrap, Jquery and Ajax</h1>
+            <p class="lead">
+                Json data get from URL and its display by using Handlebars Js. Ajax is used for handle data transfor(Request and response).
+            </p>
+            <p class="text-danger">
+                Note: If you run this script in your local machine please use localhost(ex: xampp, lampp)
+            </p>
+            <button class="btn btn-primary btn-lg float-right">Load Data</button>
+            <br>
+        </div>
+        <div id="fetchData"></div>
+        <script id="tpl" type="text/template">
+            <table class="table-responsive table table-striped table-bordered ">
+                <tr class="bg-info text-white text-uppercase ">
+                    <th>Id</th>
+                    <th>Uid</th>
+                    <th>Url</th>
+                    <th>Name</th>
+                    <th>Icon</th>
+                    <th>PromptId</th>
+                    <th>WebPushID</th>
+                    <th>Auto Prompt</th>
+                    <th>Created At</th>
+                    <th>Active</th>
+                </tr>
+                {{#sites}}
+                <tr>
+                    <td>{{id}}</td>
+                    <td>{{uid}}</td>
+                    <td>{{url}}</td>
+                    <td>{{name}}</td>
+                    <td><img src="{{icon}}" class="img-fluid" alt="icon"></td>
+                    <td>{{promptId}}</td>
+                    <td>{{webPushID}}</td>
+                    <td>{{auto_prompt}}</td>
+                    <td>{{createdAt}}</td>
+                    <td>{{active}}</td>
+                </tr>
+                {{/sites}}
+            </table>
+        </script>
+
+    </div>
+    <script src="https://code.jquery.com/jquery-2.0.3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.1.2/handlebars.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("button").click(function() {
+                /*  var xhr = new XMLHttpRequest({ mozSystem: true }); */
+                var url = 'https://aimtell.com/files/sites.json';
+
+                var fnGet = function(url, tplId, fetchData) {
+                    $.getJSON(url, function(data) {
+                        var template = $(tplId).html();
+                        var tempCompile = Handlebars.compile(template)(data);
+                        $(fetchData).append(tempCompile);
+                    });
+                }
+                fnGet(url, '#tpl', '#fetchData');
+            });
+        });
+    </script>
+</body>
+
+</html>
